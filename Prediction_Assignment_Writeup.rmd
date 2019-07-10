@@ -107,10 +107,10 @@ fitControl <- trainControl(method = "cv",
 model_RF <- train(classe ~ ., data=train_set, method="rf",trControl=fitControl)
 pred_RF <- predict(model_RF, newdata = cross_val)
 confusionMatrix(pred_RF, cross_val$classe)
-acc_rf <- confusionMatrix(pred_RF, cross_val$classe)
+acc_rf <- as.numeric(confusionMatrix(pred_RF, cross_val$classe)$overall[1])
 ```
 
-The accuracy of the model is of `r as.numeric(acc_rf)*100`%, that represents and out of sample error of `r (1-as.numeric(acc_rf))*100`%.
+The accuracy of the model is of `r acc_rf*100`%, that represents and out of sample error of `r (1-acc_rf)*100`%.
 
 ### Generalized Boosted Model
 ```{r GBM, echo=FALSE}
@@ -118,14 +118,14 @@ model_GBM <- train(classe ~ ., data=train_set, method="gbm", verbose = FALSE, tr
 model_GBM$finalModel
 pred_GBM <- predict(model_GBM, newdata = cross_val)
 confusionMatrix(pred_GBM, cross_val$classe)
-acc_gmb <- confusionMatrix(pred_GBM, cross_val$classe)$overall[1]
+acc_gmb <- as.numeric(confusionMatrix(pred_GBM, cross_val$classe)$overall[1])
 
 # End Parallelization Cluster:
 stopCluster(cluster)
 registerDoSEQ()
 ```
 
-The accuracy of the model is of `r as.numeric(acc_gmb)`%, that represents and out of sample error of `r (1-as.numeric(acc_gmb))`%.
+The accuracy of the model is of `r acc_gmb*100`%, that represents and out of sample error of `r (1-acc_gmb)*100`%.
 
 # Selection of Best Prediction Model
 
